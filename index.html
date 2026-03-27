@@ -124,26 +124,21 @@
             // load ime rules from cdn
             $('textarea').ime({
                 languages: ['bn'],
-                imePath: "https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.2.0/"
+                imePath: "https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/"
             });
             // copy text functionality
             $('#action-select-all').click(function () {
-                $('#banglapad').select();
-                try {
-                    var successful = document.execCommand('copy');
-                    var msg = successful ? 'Copied' : 'Failed to copy';
-
-                    // Show feedback
-                    var $btn = $(this);
-                    var originalHtml = $btn.html();
+                var $btn = $(this);
+                var originalHtml = $btn.html();
+                var text = $('#banglapad').val();
+                navigator.clipboard.writeText(text).then(function () {
                     $btn.html('<i class="bi bi-check2"></i> Copied');
                     setTimeout(function () {
                         $btn.html(originalHtml);
                     }, 2000);
-
-                } catch (err) {
+                }).catch(function (err) {
                     console.error("Error copying");
-                }
+                });
             });
             // clear textarea when clicked
             $('#action-clear-all').click(function () {
@@ -167,7 +162,6 @@
 
             // Language switching logic
             var currentLang = 'bn';
-            var ime = $('textarea').data('ime');
 
             function updateLangStatus(lang) {
                 currentLang = lang;
@@ -257,12 +251,12 @@
                 <span class="font-bold text-lg tracking-tight">অনলাইন প্রভাত কিবোর্ড</span>
             </div>
             <div class="flex items-center gap-2">
-                <a href="https://github.com/mdminhazulhaque/probhat-macos" target="_blank"
+                <a href="https://github.com/mdminhazulhaque/probhat-macos" target="_blank" rel="noopener noreferrer"
                     class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 gap-2">
                     <i class="bi bi-apple text-lg"></i>
                     <span class="hidden sm:inline whitespace-nowrap">Need Probhat on macOS?</span>
                 </a>
-                <a href="https://github.com/mdminhazulhaque/probhat-web"
+                <a href="https://github.com/mdminhazulhaque/probhat-web" target="_blank" rel="noopener noreferrer"
                     class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 gap-2">
                     <i class="bi bi-github text-lg"></i>
                     <span class="hidden sm:inline">GitHub</span>
@@ -329,7 +323,7 @@
         <div
             class="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <p class="text-center text-sm leading-loose text-muted-foreground md:text-left">
-                Built by <a href="https://github.com/mdminhazulhaque" target="_blank"
+                Built by <a href="https://github.com/mdminhazulhaque" target="_blank" rel="noopener noreferrer"
                     class="font-medium underline underline-offset-4">Md. Minhazul Haque</a>.
             </p>
         </div>
