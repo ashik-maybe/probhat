@@ -10,7 +10,7 @@
             content="probhat-web - Type in Bangla using virtual Probhat keyboard on your browser, without installing anything."
         />
 
-        <title>probhat-web | অনলাইন প্রভাত কিবোর্ড</title>
+        <title>অনলাইন প্রভাত কিবোর্ড</title>
 
         <link rel="icon" type="image/x-icon" href="favicon.ico?t=20160710" />
         <link rel="apple-touch-icon" href="apple-touch-icon.png?t=20160710" />
@@ -95,6 +95,18 @@
             .imeselector {
                 display: none !important;
             }
+
+            /* Smooth toggle for layout container */
+            #layout-container {
+                transition:
+                    opacity 0.2s ease,
+                    transform 0.2s ease;
+            }
+            #layout-container.opacity-0 {
+                opacity: 0;
+                transform: translateY(-8px);
+                pointer-events: none;
+            }
         </style>
 
         <!-- Fonts -->
@@ -102,7 +114,7 @@
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap"
             rel="stylesheet"
         />
-        <!-- Bootstrap Icons (keeping for simplicity) -->
+        <!-- Bootstrap Icons -->
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
@@ -214,39 +226,43 @@
                     localStorage.setItem("hasSeenShortcutTooltip", "true");
                 }
 
-                // Modal Logic
-                const modal = document.getElementById("layoutModal");
-                const openModalBtn = document.querySelector('[data-modal-target="layoutModal"]');
-                const closeModalBtns = document.querySelectorAll("[data-modal-close]");
+                // Layout Image Toggle Logic (replaces modal)
+                const layoutContainer = document.getElementById("layout-container");
+                const layoutToggleBtn = document.getElementById("action-toggle-layout");
 
-                function toggleModal(show) {
+                function toggleLayoutImage(show) {
                     if (show) {
-                        modal.classList.remove("hidden");
-                        modal.classList.add("flex");
-                        document.body.style.overflow = "hidden";
+                        layoutContainer.classList.remove("hidden", "opacity-0");
+                        layoutToggleBtn.classList.add("bg-accent", "text-accent-foreground");
                     } else {
-                        modal.classList.add("hidden");
-                        modal.classList.remove("flex");
-                        document.body.style.overflow = "";
+                        layoutContainer.classList.add("opacity-0");
+                        setTimeout(() => {
+                            layoutContainer.classList.add("hidden");
+                        }, 200);
+                        layoutToggleBtn.classList.remove("bg-accent", "text-accent-foreground");
                     }
                 }
 
-                openModalBtn.addEventListener("click", () => toggleModal(true));
-                closeModalBtns.forEach((btn) =>
-                    btn.addEventListener("click", () => toggleModal(false)),
-                );
-
-                // Close on outside click
-                modal.addEventListener("click", (e) => {
-                    if (e.target === modal) toggleModal(false);
+                layoutToggleBtn.addEventListener("click", () => {
+                    const isHidden = layoutContainer.classList.contains("hidden");
+                    toggleLayoutImage(isHidden);
+                    $("#banglapad").focus();
                 });
 
-                // Close on Escape
-                document.addEventListener("keydown", (e) => {
-                    if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-                        toggleModal(false);
+                // Close layout when clicking outside the image area
+                layoutContainer.addEventListener("click", (e) => {
+                    if (e.target === layoutContainer) {
+                        toggleLayoutImage(false);
                     }
                 });
+
+                // Fallback if SVG fails to load
+                const layoutImg = document.querySelector("#layout-container img");
+                if (layoutImg) {
+                    layoutImg.onerror = function () {
+                        this.src = "probhat-layout.png";
+                    };
+                }
             });
         </script>
     </head>
@@ -319,7 +335,7 @@
                     </div>
 
                     <button
-                        data-modal-target="layoutModal"
+                        id="action-toggle-layout"
                         class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-2 w-full sm:w-auto"
                     >
                         <i class="bi bi-keyboard"></i> Layout
@@ -334,6 +350,21 @@
                     class="flex min-h-[400px] w-full rounded-md border border-input bg-background px-3 py-2 text-lg ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-bengali resize-y shadow-sm"
                     placeholder="এখানে বাংলা লিখুন..."
                 ></textarea>
+
+                <!-- Layout Image Container (hidden by default) -->
+                <div
+                    id="layout-container"
+                    class="hidden mt-4 p-4 bg-card rounded-md border border-input"
+                >
+                    <div class="flex items-center justify-center">
+                        <img
+                            src="KB-Bengali-Probhat.svg"
+                            class="max-w-full h-auto rounded-md border shadow-sm"
+                            alt="Probhat Keyboard Layout"
+                            loading="lazy"
+                        />
+                    </div>
+                </div>
             </div>
         </main>
 
@@ -354,54 +385,6 @@
                 </p>
             </div>
         </footer>
-
-        <!-- Layout Modal -->
-        <div
-            id="layoutModal"
-            class="fixed inset-0 z-50 hidden items-center justify-center bg-background/80 backdrop-blur-sm"
-            aria-labelledby="layoutModalLabel"
-            role="dialog"
-            aria-modal="true"
-        >
-            <div
-                class="fixed left-[50%] top-[50%] z-50 grid w-full max-w-3xl translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg"
-            >
-                <div class="flex flex-col space-y-1.5 text-center sm:text-left">
-                    <div class="flex items-center justify-between">
-                        <h2
-                            id="layoutModalLabel"
-                            class="text-lg font-semibold leading-none tracking-tight"
-                        >
-                            Probhat Keyboard Layout
-                        </h2>
-                        <button
-                            type="button"
-                            class="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-                            data-modal-close
-                        >
-                            <i class="bi bi-x-lg h-4 w-4"></i>
-                            <span class="sr-only">Close</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="flex items-center justify-center p-4">
-                    <img
-                        src="probhat-layout.png"
-                        class="max-w-full h-auto rounded-md border shadow-sm"
-                        alt="Probhat Keyboard Layout"
-                    />
-                </div>
-                <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-                    <button
-                        type="button"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
-                        data-modal-close
-                    >
-                        Close
-                    </button>
-                </div>
-            </div>
-        </div>
     </body>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57632461-8"></script>
     <script>
