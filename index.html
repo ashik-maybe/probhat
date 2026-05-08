@@ -19,14 +19,14 @@
         <!-- Preload critical fonts -->
         <link
             rel="preload"
-            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500:600;700&family=Noto+Sans+Bengali:wght@400;500:600;700&display=swap"
             as="style"
             onload="this.rel = 'stylesheet'"
         />
         <noscript
             ><link
                 rel="stylesheet"
-                href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500:600;700&display=swap"
+                href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500:600;700&family=Noto+Sans+Bengali:wght@400;500:600;700&display=swap"
         /></noscript>
 
         <!-- Tailwind CSS -->
@@ -275,7 +275,8 @@
 
                 // SVG Fallback
                 const layoutImg = layoutEl.querySelector("img");
-                if (layoutImg) layoutImg.onerror = () => (layoutImg.src = "probhat-layout.png");
+                if (layoutImg)
+                    layoutImg.onerror = () => (layoutImg.src = "public/probhat-layout.png");
 
                 // Hide share button by default
                 if (!/Android|iPhone|iPad/i.test(navigator.userAgent)) {
@@ -443,7 +444,7 @@
                     </svg>
                     <span class="hidden sm:inline">Layout</span>
                     <!-- Shortcut tooltip on hover -->
-                    <span class="shortcut-tip">Ctrl+L</span>
+                    <span class="shortcut-tip hidden md-block">Ctrl+L</span>
                 </button>
             </div>
 
@@ -468,7 +469,7 @@
                 >
                     <div class="flex justify-center overflow-x-auto">
                         <img
-                            src="KB-Bengali-Probhat.svg"
+                            src="public/KB-Bengali-Probhat.svg"
                             class="max-w-full h-auto rounded-md border"
                             alt="Probhat Keyboard Layout"
                             loading="lazy"

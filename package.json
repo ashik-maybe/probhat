@@ -1,5 +1,5 @@
 {
-  "name": "probhat-web",
+  "name": "online-probhat-keyboard",
   "scripts": {
     "dev": "bunx vite"
   }
