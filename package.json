@@ -1,6 +1,6 @@
 {
   "name": "probhat-web",
   "scripts": {
-    "dev": "bunx serve ."
+    "dev": "bunx vite"
   }
 }

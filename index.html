@@ -1,376 +1,416 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="ashik-maybe" />
+        <meta
+            name="description"
+            content="probhat-web - Type in Bangla using virtual Probhat keyboard on your browser, without installing anything."
+        />
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Md. Minhazul Haque" />
-    <meta name="description"
-        content="probhat-web - Type in Bangla using virtual Probhat keyboard on your browser, without installing anything." />
+        <title>probhat-web | অনলাইন প্রভাত কিবোর্ড</title>
 
-    <title>probhat-web | অনলাইন প্রভাত কিবোর্ড</title>
+        <link rel="icon" type="image/x-icon" href="favicon.ico?t=20160710" />
+        <link rel="apple-touch-icon" href="apple-touch-icon.png?t=20160710" />
 
-    <link rel="icon" type="image/x-icon" href="favicon.ico?t=20160710">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?t=20160710">
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        bengali: ['Noto Serif Bengali', 'serif'],
+        <!-- Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ["Inter", "sans-serif"],
+                            bengali: ["Noto Serif Bengali", "serif"],
+                        },
+                        colors: {
+                            border: "hsl(var(--border))",
+                            input: "hsl(var(--input))",
+                            ring: "hsl(var(--ring))",
+                            background: "hsl(var(--background))",
+                            foreground: "hsl(var(--foreground))",
+                            primary: {
+                                DEFAULT: "hsl(var(--primary))",
+                                foreground: "hsl(var(--primary-foreground))",
+                            },
+                            secondary: {
+                                DEFAULT: "hsl(var(--secondary))",
+                                foreground: "hsl(var(--secondary-foreground))",
+                            },
+                            destructive: {
+                                DEFAULT: "hsl(var(--destructive))",
+                                foreground: "hsl(var(--destructive-foreground))",
+                            },
+                            muted: {
+                                DEFAULT: "hsl(var(--muted))",
+                                foreground: "hsl(var(--muted-foreground))",
+                            },
+                            accent: {
+                                DEFAULT: "hsl(var(--accent))",
+                                foreground: "hsl(var(--accent-foreground))",
+                            },
+                        },
+                        borderRadius: {
+                            lg: "var(--radius)",
+                            md: "calc(var(--radius) - 2px)",
+                            sm: "calc(var(--radius) - 4px)",
+                        },
                     },
-                    colors: {
-                        border: "hsl(var(--border))",
-                        input: "hsl(var(--input))",
-                        ring: "hsl(var(--ring))",
-                        background: "hsl(var(--background))",
-                        foreground: "hsl(var(--foreground))",
-                        primary: {
-                            DEFAULT: "hsl(var(--primary))",
-                            foreground: "hsl(var(--primary-foreground))",
-                        },
-                        secondary: {
-                            DEFAULT: "hsl(var(--secondary))",
-                            foreground: "hsl(var(--secondary-foreground))",
-                        },
-                        destructive: {
-                            DEFAULT: "hsl(var(--destructive))",
-                            foreground: "hsl(var(--destructive-foreground))",
-                        },
-                        muted: {
-                            DEFAULT: "hsl(var(--muted))",
-                            foreground: "hsl(var(--muted-foreground))",
-                        },
-                        accent: {
-                            DEFAULT: "hsl(var(--accent))",
-                            foreground: "hsl(var(--accent-foreground))",
-                        },
-                    },
-                    borderRadius: {
-                        lg: "var(--radius)",
-                        md: "calc(var(--radius) - 2px)",
-                        sm: "calc(var(--radius) - 4px)",
-                    },
+                },
+            };
+        </script>
+        <style type="text/tailwindcss">
+            @layer base {
+                :root {
+                    --background: 0 0% 100%;
+                    --foreground: 222.2 84% 4.9%;
+                    --card: 0 0% 100%;
+                    --card-foreground: 222.2 84% 4.9%;
+                    --popover: 0 0% 100%;
+                    --popover-foreground: 222.2 84% 4.9%;
+                    --primary: 222.2 47.4% 11.2%;
+                    --primary-foreground: 210 40% 98%;
+                    --secondary: 210 40% 96.1%;
+                    --secondary-foreground: 222.2 47.4% 11.2%;
+                    --muted: 210 40% 96.1%;
+                    --muted-foreground: 215.4 16.3% 46.9%;
+                    --accent: 210 40% 96.1%;
+                    --accent-foreground: 222.2 47.4% 11.2%;
+                    --destructive: 0 84.2% 60.2%;
+                    --destructive-foreground: 210 40% 98%;
+                    --border: 214.3 31.8% 91.4%;
+                    --input: 214.3 31.8% 91.4%;
+                    --ring: 222.2 84% 4.9%;
+                    --radius: 0.5rem;
                 }
             }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer base {
-            :root {
-                --background: 0 0% 100%;
-                --foreground: 222.2 84% 4.9%;
-                --card: 0 0% 100%;
-                --card-foreground: 222.2 84% 4.9%;
-                --popover: 0 0% 100%;
-                --popover-foreground: 222.2 84% 4.9%;
-                --primary: 222.2 47.4% 11.2%;
-                --primary-foreground: 210 40% 98%;
-                --secondary: 210 40% 96.1%;
-                --secondary-foreground: 222.2 47.4% 11.2%;
-                --muted: 210 40% 96.1%;
-                --muted-foreground: 215.4 16.3% 46.9%;
-                --accent: 210 40% 96.1%;
-                --accent-foreground: 222.2 47.4% 11.2%;
-                --destructive: 0 84.2% 60.2%;
-                --destructive-foreground: 210 40% 98%;
-                --border: 214.3 31.8% 91.4%;
-                --input: 214.3 31.8% 91.4%;
-                --ring: 222.2 84% 4.9%;
-                --radius: 0.5rem;
+
+            body {
+                @apply bg-background text-foreground font-sans antialiased;
             }
-        }
-        
-        body {
-            @apply bg-background text-foreground font-sans antialiased;
-        }
 
-        /* hide ime switch button */
-        .imeselector {
-            display: none !important;
-        }
-    </style>
+            /* hide ime switch button */
+            .imeselector {
+                display: none !important;
+            }
+        </style>
 
-    <!-- Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap"
-        rel="stylesheet">
-    <!-- Bootstrap Icons (keeping for simplicity) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <!-- Fonts -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <!-- Bootstrap Icons (keeping for simplicity) -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.selector.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.preferences.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.inputmethods.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.selector.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.preferences.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.inputmethods.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            // patch default settings so bn will be default without hitting Ctrl+M
-            $.ime.preferences.registry.language = "bn";
-            $.ime.preferences.registry.showSelector = false;
-            $.ime.preferences.registry.imes = {
-                bn: 'bn-probhat',
-                en: 'system'
-            };
-            $.ime.preferences.getDefaultLanguage = function () {
-                return "bn";
-            };
-            // load ime rules from cdn
-            $('textarea').ime({
-                languages: ['bn'],
-                imePath: "https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/"
-            });
-            // copy text functionality
-            $('#action-select-all').click(function () {
-                var $btn = $(this);
-                var originalHtml = $btn.html();
-                var text = $('#banglapad').val();
-                navigator.clipboard.writeText(text).then(function () {
-                    $btn.html('<i class="bi bi-check2"></i> Copied');
+        <script>
+            $(document).ready(function () {
+                // patch default settings so bn will be default without hitting Ctrl+M
+                $.ime.preferences.registry.language = "bn";
+                $.ime.preferences.registry.showSelector = false;
+                $.ime.preferences.registry.imes = {
+                    bn: "bn-probhat",
+                    en: "system",
+                };
+                $.ime.preferences.getDefaultLanguage = function () {
+                    return "bn";
+                };
+                // load ime rules from cdn
+                $("textarea").ime({
+                    languages: ["bn"],
+                    imePath: "https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/",
+                });
+                // copy text functionality
+                $("#action-select-all").click(function () {
+                    var $btn = $(this);
+                    var originalHtml = $btn.html();
+                    var text = $("#banglapad").val();
+                    navigator.clipboard
+                        .writeText(text)
+                        .then(function () {
+                            $btn.html('<i class="bi bi-check2"></i> Copied');
+                            setTimeout(function () {
+                                $btn.html(originalHtml);
+                            }, 2000);
+                        })
+                        .catch(function (err) {
+                            console.error("Error copying");
+                        });
+                });
+                // clear textarea when clicked
+                $("#action-clear-all").click(function () {
+                    $("#banglapad").val("");
+                    localStorage.removeItem("banglapad_content");
+                    $("#banglapad").focus();
+                });
+
+                // set cursor on textarea when document is loaded
+                $("#banglapad").focus();
+
+                // Auto-save functionality
+                var savedContent = localStorage.getItem("banglapad_content");
+                if (savedContent) {
+                    $("#banglapad").val(savedContent);
+                }
+
+                $("#banglapad").on("input", function () {
+                    localStorage.setItem("banglapad_content", $(this).val());
+                });
+
+                // Language switching logic
+                var currentLang = "bn";
+
+                function updateLangStatus(lang) {
+                    currentLang = lang;
+                    var label = lang === "bn" ? "🇧🇩 Bengali" : "🇺🇸 English";
+                    $("#current-lang").text(label);
+                }
+
+                $("#action-switch-lang").click(function () {
+                    var imeInstance = $("textarea").data("ime");
+                    if (currentLang === "bn") {
+                        imeInstance.disable(); // Switch to system (English)
+                        updateLangStatus("en");
+                    } else {
+                        imeInstance.enable(); // Switch back to IME
+                        imeInstance.setIM("bn-probhat");
+                        updateLangStatus("bn");
+                    }
+                    $("#banglapad").focus();
+                });
+
+                // Listen for Ctrl+M to update UI
+                $("#banglapad").on("keydown", function (e) {
+                    if (e.ctrlKey && e.which === 77) {
+                        setTimeout(function () {
+                            var newLang = currentLang === "bn" ? "en" : "bn";
+                            updateLangStatus(newLang);
+                        }, 100);
+                    }
+                });
+
+                // Show tooltip on first load
+                if (!localStorage.getItem("hasSeenShortcutTooltip")) {
+                    var $tooltip = $("#shortcut-tooltip");
+                    $tooltip.removeClass("hidden");
+
+                    // Hide after 5 seconds
                     setTimeout(function () {
-                        $btn.html(originalHtml);
-                    }, 2000);
-                }).catch(function (err) {
-                    console.error("Error copying");
+                        $tooltip.addClass("hidden");
+                    }, 5000);
+
+                    // Mark as seen
+                    localStorage.setItem("hasSeenShortcutTooltip", "true");
+                }
+
+                // Modal Logic
+                const modal = document.getElementById("layoutModal");
+                const openModalBtn = document.querySelector('[data-modal-target="layoutModal"]');
+                const closeModalBtns = document.querySelectorAll("[data-modal-close]");
+
+                function toggleModal(show) {
+                    if (show) {
+                        modal.classList.remove("hidden");
+                        modal.classList.add("flex");
+                        document.body.style.overflow = "hidden";
+                    } else {
+                        modal.classList.add("hidden");
+                        modal.classList.remove("flex");
+                        document.body.style.overflow = "";
+                    }
+                }
+
+                openModalBtn.addEventListener("click", () => toggleModal(true));
+                closeModalBtns.forEach((btn) =>
+                    btn.addEventListener("click", () => toggleModal(false)),
+                );
+
+                // Close on outside click
+                modal.addEventListener("click", (e) => {
+                    if (e.target === modal) toggleModal(false);
+                });
+
+                // Close on Escape
+                document.addEventListener("keydown", (e) => {
+                    if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+                        toggleModal(false);
+                    }
                 });
             });
-            // clear textarea when clicked
-            $('#action-clear-all').click(function () {
-                $('#banglapad').val('');
-                localStorage.removeItem('banglapad_content');
-                $('#banglapad').focus();
-            });
+        </script>
+    </head>
 
-            // set cursor on textarea when document is loaded
-            $('#banglapad').focus();
-
-            // Auto-save functionality
-            var savedContent = localStorage.getItem('banglapad_content');
-            if (savedContent) {
-                $('#banglapad').val(savedContent);
-            }
-
-            $('#banglapad').on('input', function () {
-                localStorage.setItem('banglapad_content', $(this).val());
-            });
-
-            // Language switching logic
-            var currentLang = 'bn';
-
-            function updateLangStatus(lang) {
-                currentLang = lang;
-                var label = (lang === 'bn') ? '🇧🇩 Bengali' : '🇺🇸 English';
-                $('#current-lang').text(label);
-            }
-
-            $('#action-switch-lang').click(function () {
-                var imeInstance = $('textarea').data('ime');
-                if (currentLang === 'bn') {
-                    imeInstance.disable(); // Switch to system (English)
-                    updateLangStatus('en');
-                } else {
-                    imeInstance.enable(); // Switch back to IME
-                    imeInstance.setIM('bn-probhat');
-                    updateLangStatus('bn');
-                }
-                $('#banglapad').focus();
-            });
-
-            // Listen for Ctrl+M to update UI
-            $('#banglapad').on('keydown', function (e) {
-                if (e.ctrlKey && e.which === 77) {
-                    setTimeout(function () {
-                        var newLang = (currentLang === 'bn') ? 'en' : 'bn';
-                        updateLangStatus(newLang);
-                    }, 100);
-                }
-            });
-
-            // Show tooltip on first load
-            if (!localStorage.getItem('hasSeenShortcutTooltip')) {
-                var $tooltip = $('#shortcut-tooltip');
-                $tooltip.removeClass('hidden');
-
-                // Hide after 5 seconds
-                setTimeout(function () {
-                    $tooltip.addClass('hidden');
-                }, 5000);
-
-                // Mark as seen
-                localStorage.setItem('hasSeenShortcutTooltip', 'true');
-            }
-
-            // Modal Logic
-            const modal = document.getElementById('layoutModal');
-            const openModalBtn = document.querySelector('[data-modal-target="layoutModal"]');
-            const closeModalBtns = document.querySelectorAll('[data-modal-close]');
-
-            function toggleModal(show) {
-                if (show) {
-                    modal.classList.remove('hidden');
-                    modal.classList.add('flex');
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                    document.body.style.overflow = '';
-                }
-            }
-
-            openModalBtn.addEventListener('click', () => toggleModal(true));
-            closeModalBtns.forEach(btn => btn.addEventListener('click', () => toggleModal(false)));
-
-            // Close on outside click
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) toggleModal(false);
-            });
-
-            // Close on Escape
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-                    toggleModal(false);
-                }
-            });
-        });
-    </script>
-</head>
-
-<body class="min-h-screen bg-background flex flex-col">
-
-    <!-- Navbar -->
-    <nav class="border-b bg-card">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <img src="favicon.ico" alt="Logo" class="w-8 h-8">
-                <span class="font-bold text-lg tracking-tight">অনলাইন প্রভাত কিবোর্ড</span>
+    <body class="min-h-screen bg-background flex flex-col">
+        <!-- Navbar -->
+        <nav class="border-b bg-card">
+            <div
+                class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+            >
+                <div class="flex items-center gap-3">
+                    <img src="favicon.ico" alt="Logo" class="w-8 h-8" />
+                    <span class="font-bold text-lg tracking-tight">অনলাইন প্রভাত কিবোর্ড</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a
+                        href="https://github.com/ashik-maybe/probhat-web"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 gap-2"
+                    >
+                        <i class="bi bi-github text-lg"></i>
+                        <span class="hidden sm:inline">GitHub</span>
+                    </a>
+                </div>
             </div>
-            <div class="flex items-center gap-2">
-                <a href="https://github.com/mdminhazulhaque/probhat-macos" target="_blank" rel="noopener noreferrer"
-                    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 gap-2">
-                    <i class="bi bi-apple text-lg"></i>
-                    <span class="hidden sm:inline whitespace-nowrap">Need Probhat on macOS?</span>
-                </a>
-                <a href="https://github.com/mdminhazulhaque/probhat-web" target="_blank" rel="noopener noreferrer"
-                    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 gap-2">
-                    <i class="bi bi-github text-lg"></i>
-                    <span class="hidden sm:inline">GitHub</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+        </nav>
 
-    <!-- Main Content -->
-    <main class="flex-1 container max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-
-
-
-        <!-- Toolbar -->
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
-
-            <!-- Left: Actions -->
-            <div class="flex items-center gap-2 w-full sm:w-auto">
-                <button type="button" id="action-select-all"
-                    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full sm:w-auto gap-2">
-                    <i class="bi bi-clipboard"></i> Copy
-                </button>
-                <button type="button" id="action-clear-all"
-                    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full sm:w-auto gap-2">
-                    <i class="bi bi-trash"></i> Clear
-                </button>
-            </div>
-
-            <!-- Right: Settings -->
-            <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
-                <div class="relative inline-block w-full sm:w-auto">
-                    <button id="action-switch-lang"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full sm:w-auto">
-                        <span id="current-lang">🇧🇩 Bengali</span>
+        <!-- Main Content -->
+        <main class="flex-1 container max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            <!-- Toolbar -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
+                <!-- Left: Actions -->
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button
+                        type="button"
+                        id="action-select-all"
+                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full sm:w-auto gap-2"
+                    >
+                        <i class="bi bi-clipboard"></i> Copy
                     </button>
-                    <!-- Tooltip -->
-                    <div id="shortcut-tooltip"
-                        class="hidden absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-3 py-2 bg-foreground text-background text-xs font-medium rounded shadow-lg whitespace-nowrap z-50">
-                        Press Ctrl + M to switch
+                    <button
+                        type="button"
+                        id="action-clear-all"
+                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full sm:w-auto gap-2"
+                    >
+                        <i class="bi bi-trash"></i> Clear
+                    </button>
+                </div>
+
+                <!-- Right: Settings -->
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <div class="relative inline-block w-full sm:w-auto">
+                        <button
+                            id="action-switch-lang"
+                            class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full sm:w-auto"
+                        >
+                            <span id="current-lang">🇧🇩 Bengali</span>
+                        </button>
+                        <!-- Tooltip -->
                         <div
-                            class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-foreground">
+                            id="shortcut-tooltip"
+                            class="hidden absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-3 py-2 bg-foreground text-background text-xs font-medium rounded shadow-lg whitespace-nowrap z-50"
+                        >
+                            Press Ctrl + M to switch
+                            <div
+                                class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-foreground"
+                            ></div>
                         </div>
                     </div>
-                </div>
 
-                <button data-modal-target="layoutModal"
-                    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-2 w-full sm:w-auto">
-                    <i class="bi bi-keyboard"></i> Layout
-                </button>
-            </div>
-        </div>
-
-        <!-- Editor Area -->
-        <div class="relative w-full">
-            <textarea id="banglapad"
-                class="flex min-h-[400px] w-full rounded-md border border-input bg-background px-3 py-2 text-lg ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-bengali resize-y shadow-sm"
-                placeholder="এখানে বাংলা লিখুন..."></textarea>
-        </div>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t py-6 md:py-0">
-        <div
-            class="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-sm leading-loose text-muted-foreground md:text-left">
-                Built by <a href="https://github.com/mdminhazulhaque" target="_blank" rel="noopener noreferrer"
-                    class="font-medium underline underline-offset-4">Md. Minhazul Haque</a>.
-            </p>
-        </div>
-    </footer>
-
-    <!-- Layout Modal -->
-    <div id="layoutModal"
-        class="fixed inset-0 z-50 hidden items-center justify-center bg-background/80 backdrop-blur-sm"
-        aria-labelledby="layoutModalLabel" role="dialog" aria-modal="true">
-        <div
-            class="fixed left-[50%] top-[50%] z-50 grid w-full max-w-3xl translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg">
-            <div class="flex flex-col space-y-1.5 text-center sm:text-left">
-                <div class="flex items-center justify-between">
-                    <h2 id="layoutModalLabel" class="text-lg font-semibold leading-none tracking-tight">Probhat Keyboard
-                        Layout</h2>
-                    <button type="button"
-                        class="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-                        data-modal-close>
-                        <i class="bi bi-x-lg h-4 w-4"></i>
-                        <span class="sr-only">Close</span>
+                    <button
+                        data-modal-target="layoutModal"
+                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-2 w-full sm:w-auto"
+                    >
+                        <i class="bi bi-keyboard"></i> Layout
                     </button>
                 </div>
             </div>
-            <div class="flex items-center justify-center p-4">
-                <img src="probhat-layout.png" class="max-w-full h-auto rounded-md border shadow-sm"
-                    alt="Probhat Keyboard Layout">
+
+            <!-- Editor Area -->
+            <div class="relative w-full">
+                <textarea
+                    id="banglapad"
+                    class="flex min-h-[400px] w-full rounded-md border border-input bg-background px-3 py-2 text-lg ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-bengali resize-y shadow-sm"
+                    placeholder="এখানে বাংলা লিখুন..."
+                ></textarea>
             </div>
-            <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-                <button type="button"
-                    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
-                    data-modal-close>
-                    Close
-                </button>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t py-6 md:py-0">
+            <div
+                class="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
+            >
+                <p class="text-center text-sm leading-loose text-muted-foreground md:text-left">
+                    Modified by
+                    <a
+                        href="https://github.com/ashik-maybe"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="font-medium underline underline-offset-4"
+                        >ashik-maybe</a
+                    >.
+                </p>
+            </div>
+        </footer>
+
+        <!-- Layout Modal -->
+        <div
+            id="layoutModal"
+            class="fixed inset-0 z-50 hidden items-center justify-center bg-background/80 backdrop-blur-sm"
+            aria-labelledby="layoutModalLabel"
+            role="dialog"
+            aria-modal="true"
+        >
+            <div
+                class="fixed left-[50%] top-[50%] z-50 grid w-full max-w-3xl translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg"
+            >
+                <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+                    <div class="flex items-center justify-between">
+                        <h2
+                            id="layoutModalLabel"
+                            class="text-lg font-semibold leading-none tracking-tight"
+                        >
+                            Probhat Keyboard Layout
+                        </h2>
+                        <button
+                            type="button"
+                            class="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+                            data-modal-close
+                        >
+                            <i class="bi bi-x-lg h-4 w-4"></i>
+                            <span class="sr-only">Close</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center p-4">
+                    <img
+                        src="probhat-layout.png"
+                        class="max-w-full h-auto rounded-md border shadow-sm"
+                        alt="Probhat Keyboard Layout"
+                    />
+                </div>
+                <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+                    <button
+                        type="button"
+                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+                        data-modal-close
+                    >
+                        Close
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
+    </body>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57632461-8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
-</body>
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-57632461-8"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'UA-57632461-8');
-</script>
-
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "UA-57632461-8");
+    </script>
 </html>

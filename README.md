@@ -1,9 +1,9 @@
 # probhat-web 🌐
 **অনলাইন প্রভাত কিবোর্ড | Online Probhat Keyboard**
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://probhat.mdminhazulhaque.io/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://ashik-maybe.github.io/probhat-web/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/mdminhazulhaque/probhat-web.svg)](https://github.com/mdminhazulhaque/probhat-web/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/ashik-maybe/probhat-web.svg)](https://github.com/ashik-maybe/probhat-web/stargazers)
 
 Type in Bengali (বাংলা) using the popular Probhat keyboard layout directly in your web browser, without installing any software or extensions.
 
@@ -51,5 +51,5 @@ The Probhat keyboard layout is designed for intuitive Bengali typing. Here's the
 
 <p align="center">
   Made with ❤️ for the Bengali community<br>
-  <a href="https://probhat.mdminhazulhaque.io/">Try it now!</a>
+  <a href="https://ashik-maybe.github.io/probhat-web/">Try it now!</a>
 </p>
