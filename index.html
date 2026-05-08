@@ -3,12 +3,13 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="author" content="ashik-maybe" />
         <meta
             name="description"
             content="probhat-web - Type in Bangla using virtual Probhat keyboard on your browser, without installing anything."
         />
+        <meta name="theme-color" content="#ffffff" />
 
         <title>অনলাইন প্রভাত কিবোর্ড</title>
 
@@ -22,8 +23,8 @@
                 theme: {
                     extend: {
                         fontFamily: {
-                            sans: ["Plus Jakarta Sans", "Inter", "sans-serif"],
-                            bengali: ["Noto Sans Bengali", "Noto Serif Bengali", "serif"],
+                            sans: ["Plus Jakarta Sans", "system-ui", "sans-serif"],
+                            bengali: ["Noto Sans Bengali", "system-ui", "sans-serif"],
                         },
                         colors: {
                             border: "hsl(var(--border))",
@@ -39,10 +40,6 @@
                                 DEFAULT: "hsl(var(--secondary))",
                                 foreground: "hsl(var(--secondary-foreground))",
                             },
-                            destructive: {
-                                DEFAULT: "hsl(var(--destructive))",
-                                foreground: "hsl(var(--destructive-foreground))",
-                            },
                             muted: {
                                 DEFAULT: "hsl(var(--muted))",
                                 foreground: "hsl(var(--muted-foreground))",
@@ -50,6 +47,10 @@
                             accent: {
                                 DEFAULT: "hsl(var(--accent))",
                                 foreground: "hsl(var(--accent-foreground))",
+                            },
+                            card: {
+                                DEFAULT: "hsl(var(--card))",
+                                foreground: "hsl(var(--card-foreground))",
                             },
                         },
                         borderRadius: {
@@ -61,15 +62,13 @@
                 },
             };
         </script>
-        <style type="text/tailwindcss">
+        <style>
             @layer base {
                 :root {
                     --background: 0 0% 100%;
                     --foreground: 222.2 84% 4.9%;
                     --card: 0 0% 100%;
                     --card-foreground: 222.2 84% 4.9%;
-                    --popover: 0 0% 100%;
-                    --popover-foreground: 222.2 84% 4.9%;
                     --primary: 222.2 47.4% 11.2%;
                     --primary-foreground: 210 40% 98%;
                     --secondary: 210 40% 96.1%;
@@ -85,64 +84,75 @@
                     --ring: 222.2 84% 4.9%;
                     --radius: 0.5rem;
                 }
+                body {
+                    @apply bg-background text-foreground font-sans antialiased min-h-screen flex flex-col;
+                    padding-top: env(safe-area-inset-top);
+                    padding-bottom: env(safe-area-inset-bottom);
+                }
+                @media (prefers-reduced-motion: reduce) {
+                    *,
+                    *::before,
+                    *::after {
+                        animation-duration: 0.01ms !important;
+                        transition-duration: 0.01ms !important;
+                    }
+                }
             }
 
-            body {
-                @apply bg-background text-foreground font-sans antialiased;
-            }
-
-            /* hide ime switch button */
             .imeselector {
                 display: none !important;
             }
 
-            /* Smooth toggle for layout container */
+            #banglapad {
+                min-height: clamp(250px, 50dvh, 400px);
+                transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
             #layout-container {
                 transition:
-                    opacity 0.2s ease,
-                    transform 0.2s ease,
-                    box-shadow 0.2s ease;
+                    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                transform-origin: top center;
             }
-            #layout-container.opacity-0 {
+            #layout-container.state-hidden {
                 opacity: 0;
-                transform: translateY(-8px);
+                transform: translateY(-10px) scale(0.98);
                 pointer-events: none;
             }
-            #layout-container:not(.hidden):not(.opacity-0) {
-                box-shadow: 0 10px 40px -10px hsl(var(--ring) / 0.3);
+            #layout-container.state-visible {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                box-shadow: 0 10px 40px -10px hsl(var(--ring) / 0.25);
+                pointer-events: auto;
             }
 
-            /* Better focus rings */
-            button:focus-visible,
-            textarea:focus-visible {
-                @apply ring-2 ring-primary ring-offset-2 ring-offset-background outline-none;
+            .touch-btn {
+                @apply min-h-[44px] min-w-[44px] touch-action-manipulation select-none active:scale-[0.98] transition-transform;
             }
 
-            /* Mobile-friendly tap targets */
-            @media (max-width: 640px) {
-                button {
-                    @apply min-h-[44px] min-w-[44px];
-                }
+            #copy-toast {
+                transition:
+                    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             }
         </style>
 
-        <!-- Fonts: Plus Jakarta Sans + Noto Sans Bengali -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <!-- Fonts & Font Awesome -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
             href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
             rel="stylesheet"
         />
-
-        <!-- Font Awesome 7 CDN -->
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-            integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         />
 
+        <!-- jQuery & IME -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.selector.js"></script>
@@ -151,324 +161,186 @@
 
         <script>
             $(document).ready(function () {
-                // patch default settings so bn will be default without hitting Ctrl+M
                 $.ime.preferences.registry.language = "bn";
                 $.ime.preferences.registry.showSelector = false;
-                $.ime.preferences.registry.imes = {
-                    bn: "bn-probhat",
-                    en: "system",
-                };
-                $.ime.preferences.getDefaultLanguage = function () {
-                    return "bn";
-                };
-                // load ime rules from cdn
+                $.ime.preferences.registry.imes = { bn: "bn-probhat", en: "system" };
+                $.ime.preferences.getDefaultLanguage = () => "bn";
                 $("textarea").ime({
                     languages: ["bn"],
                     imePath: "https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/",
                 });
 
-                // copy text functionality with toast
-                $("#action-select-all").click(function () {
-                    var $btn = $(this);
-                    var originalHtml = $btn.html();
-                    var text = $("#banglapad").val();
+                $("#action-copy").click(function () {
                     navigator.clipboard
-                        .writeText(text)
-                        .then(function () {
-                            showCopiedToast();
-                        })
-                        .catch(function (err) {
-                            console.error("Error copying", err);
-                        });
+                        .writeText($("#banglapad").val())
+                        .then(showCopiedToast)
+                        .catch(console.error);
                 });
 
-                // clear textarea when clicked
-                $("#action-clear-all").click(function () {
+                $("#action-clear").click(function () {
                     $("#banglapad").val("");
                     localStorage.removeItem("banglapad_content");
                     $("#banglapad").focus();
                 });
 
-                // set cursor on textarea when document is loaded
                 $("#banglapad").focus();
-
-                // Auto-save functionality
-                var savedContent = localStorage.getItem("banglapad_content");
-                if (savedContent) {
-                    $("#banglapad").val(savedContent);
-                }
-
+                const saved = localStorage.getItem("banglapad_content");
+                if (saved) $("#banglapad").val(saved);
                 $("#banglapad").on("input", function () {
                     localStorage.setItem("banglapad_content", $(this).val());
                 });
 
-                // Language switching logic
-                var currentLang = "bn";
+                // Layout Toggle
+                const layoutEl = document.getElementById("layout-container");
+                const layoutBtn = document.getElementById("action-layout");
+                let layoutOpen = false;
 
-                function updateLangStatus(lang) {
-                    currentLang = lang;
-                    var label = lang === "bn" ? "🇧🇩 Bengali" : "🇺🇸 English";
-                    $("#current-lang").text(label);
-                }
-
-                $("#action-switch-lang").click(function () {
-                    var imeInstance = $("textarea").data("ime");
-                    if (currentLang === "bn") {
-                        imeInstance.disable();
-                        updateLangStatus("en");
+                function toggleLayout() {
+                    layoutOpen = !layoutOpen;
+                    if (layoutOpen) {
+                        layoutEl.classList.remove("hidden", "state-hidden");
+                        layoutEl.classList.add("state-visible");
+                        layoutBtn.classList.add("bg-accent", "text-accent-foreground");
+                        layoutBtn.setAttribute("aria-expanded", "true");
                     } else {
-                        imeInstance.enable();
-                        imeInstance.setIM("bn-probhat");
-                        updateLangStatus("bn");
+                        layoutEl.classList.add("state-hidden");
+                        layoutBtn.classList.remove("bg-accent", "text-accent-foreground");
+                        layoutBtn.setAttribute("aria-expanded", "false");
+                        setTimeout(() => layoutEl.classList.add("hidden"), 300);
                     }
                     $("#banglapad").focus();
-                });
-
-                // Listen for Ctrl+M to update UI
-                $("#banglapad").on("keydown", function (e) {
-                    if (e.ctrlKey && e.which === 77) {
-                        setTimeout(function () {
-                            var newLang = currentLang === "bn" ? "en" : "bn";
-                            updateLangStatus(newLang);
-                        }, 100);
-                    }
-                });
-
-                // Show tooltip on first load
-                if (!localStorage.getItem("hasSeenShortcutTooltip")) {
-                    var $tooltip = $("#shortcut-tooltip");
-                    $tooltip.removeClass("hidden");
-                    setTimeout(function () {
-                        $tooltip.addClass("hidden");
-                    }, 5000);
-                    localStorage.setItem("hasSeenShortcutTooltip", "true");
                 }
 
-                // Layout Image Toggle Logic
-                const layoutContainer = document.getElementById("layout-container");
-                const layoutToggleBtn = document.getElementById("action-toggle-layout");
-
-                function toggleLayoutImage(show) {
-                    if (show) {
-                        layoutContainer.classList.remove("hidden", "opacity-0");
-                        layoutToggleBtn.classList.add("bg-accent", "text-accent-foreground");
-                        layoutToggleBtn.setAttribute("aria-expanded", "true");
-                    } else {
-                        layoutContainer.classList.add("opacity-0");
-                        setTimeout(() => {
-                            layoutContainer.classList.add("hidden");
-                        }, 200);
-                        layoutToggleBtn.classList.remove("bg-accent", "text-accent-foreground");
-                        layoutToggleBtn.setAttribute("aria-expanded", "false");
-                    }
-                }
-
-                layoutToggleBtn.addEventListener("click", () => {
-                    const isHidden = layoutContainer.classList.contains("hidden");
-                    toggleLayoutImage(isHidden);
-                    $("#banglapad").focus();
+                layoutBtn.addEventListener("click", toggleLayout);
+                layoutEl.addEventListener("click", (e) => {
+                    if (e.target === layoutEl) toggleLayout();
                 });
-
-                // Close layout when clicking outside the image area
-                layoutContainer.addEventListener("click", (e) => {
-                    if (e.target === layoutContainer) {
-                        toggleLayoutImage(false);
-                    }
-                });
-
-                // Keyboard shortcut: Ctrl+L to toggle layout
                 document.addEventListener("keydown", (e) => {
                     if (e.ctrlKey && e.key.toLowerCase() === "l") {
                         e.preventDefault();
-                        const isHidden = layoutContainer.classList.contains("hidden");
-                        toggleLayoutImage(isHidden);
-                        $("#banglapad").focus();
+                        toggleLayout();
                     }
                 });
 
-                // Fallback if SVG fails to load
-                const layoutImg = document.querySelector("#layout-container img");
-                if (layoutImg) {
-                    layoutImg.onerror = function () {
-                        this.src = "probhat-layout.png";
-                    };
-                }
+                // SVG Fallback
+                const layoutImg = layoutEl.querySelector("img");
+                if (layoutImg) layoutImg.onerror = () => (layoutImg.src = "probhat-layout.png");
             });
 
-            // Toast notification for copy action
             function showCopiedToast() {
-                // Remove existing toast if any
                 const existing = document.getElementById("copy-toast");
                 if (existing) existing.remove();
-
                 const toast = document.createElement("div");
                 toast.id = "copy-toast";
                 toast.className =
-                    "fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2.5 bg-foreground text-background text-sm font-medium rounded-lg shadow-lg animate-in fade-in slide-in-from-bottom-2 duration-200";
-                toast.innerHTML = '<i class="fa-solid fa-check"></i> Copied to clipboard!';
+                    "fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2.5 bg-foreground text-background text-sm font-medium rounded-lg shadow-lg opacity-0 translate-y-2";
+                toast.innerHTML = '<i class="fa-solid fa-check"></i> Copied to clipboard';
                 document.body.appendChild(toast);
-
+                requestAnimationFrame(() => toast.classList.remove("opacity-0", "translate-y-2"));
                 setTimeout(() => {
                     toast.classList.add("opacity-0", "translate-y-2");
-                    toast.style.transition = "opacity 0.2s ease, transform 0.2s ease";
                     setTimeout(() => toast.remove(), 200);
                 }, 2000);
             }
         </script>
     </head>
 
-    <body class="min-h-screen bg-background flex flex-col">
-        <!-- Navbar -->
-        <nav class="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-40">
+    <body>
+        <!-- Navbar (compact: h-14 = 56px) -->
+        <nav class="border-b bg-background/80 backdrop-blur-md sticky top-0 z-40">
             <div
-                class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+                class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between"
             >
                 <div class="flex items-center gap-3">
-                    <img src="favicon.ico" alt="Logo" class="w-8 h-8" />
-                    <span class="font-bold text-lg tracking-tight">অনলাইন প্রভাত কিবোর্ড</span>
+                    <img src="favicon.ico" alt="Logo" class="w-7 h-7" />
+                    <span class="font-bold text-base tracking-tight">অনলাইন প্রভাত কিবোর্ড</span>
                 </div>
-                <div class="flex items-center gap-2">
-                    <a
-                        href="https://github.com/ashik-maybe/probhat-web"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-3 sm:px-4 gap-2"
-                        aria-label="View source on GitHub"
-                    >
-                        <i class="fa-brands fa-github text-lg"></i>
-                        <span class="hidden sm:inline">GitHub</span>
-                    </a>
-                </div>
+                <a
+                    href="https://github.com/ashik-maybe/probhat-online"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-9 w-9 touch-btn"
+                    aria-label="View source on GitHub"
+                >
+                    <i class="fa-brands fa-github text-base"></i>
+                </a>
             </div>
         </nav>
 
-        <!-- Main Content -->
-        <main class="flex-1 container max-w-5xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+        <!-- Main -->
+        <main
+            class="flex-1 container max-w-5xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8 flex flex-col gap-4"
+        >
             <!-- Toolbar -->
             <div
-                class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-4 mb-4"
+                class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3"
             >
-                <!-- Left: Actions -->
                 <div class="flex items-center gap-2 w-full sm:w-auto">
                     <button
-                        type="button"
-                        id="action-select-all"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-3 sm:px-4 w-full sm:w-auto gap-2"
-                        aria-label="Copy text to clipboard"
+                        id="action-copy"
+                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 w-full sm:w-auto gap-2 touch-btn"
+                        aria-label="Copy text"
                     >
                         <i class="fa-regular fa-clipboard"></i>
-                        <span class="hidden xs:inline">Copy</span>
+                        <span class="hidden sm:inline">Copy</span>
                     </button>
                     <button
-                        type="button"
-                        id="action-clear-all"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-3 sm:px-4 w-full sm:w-auto gap-2"
+                        id="action-clear"
+                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 w-full sm:w-auto gap-2 touch-btn"
                         aria-label="Clear text"
                     >
                         <i class="fa-solid fa-trash"></i>
-                        <span class="hidden xs:inline">Clear</span>
+                        <span class="hidden sm:inline">Clear</span>
                     </button>
                 </div>
-
-                <!-- Right: Settings -->
-                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
-                    <div class="relative inline-block w-full sm:w-auto">
-                        <button
-                            id="action-switch-lang"
-                            class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-3 sm:px-4 w-full sm:w-auto"
-                            aria-label="Switch input language"
-                        >
-                            <span id="current-lang">🇧🇩 Bengali</span>
-                        </button>
-                        <!-- Tooltip -->
-                        <div
-                            id="shortcut-tooltip"
-                            class="hidden absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-3 py-2 bg-foreground text-background text-xs font-medium rounded shadow-lg whitespace-nowrap z-50"
-                            role="tooltip"
-                        >
-                            Press Ctrl + M to switch
-                            <div
-                                class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-foreground"
-                            ></div>
-                        </div>
-                    </div>
-
-                    <button
-                        id="action-toggle-layout"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-3 sm:px-4 gap-2 w-full sm:w-auto"
-                        aria-expanded="false"
-                        aria-controls="layout-container"
-                        aria-label="Toggle keyboard layout view"
-                    >
-                        <i class="fa-solid fa-keyboard"></i>
-                        <span class="hidden xs:inline">Layout</span>
-                    </button>
-                </div>
+                <button
+                    id="action-layout"
+                    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 gap-2 w-full sm:w-auto touch-btn"
+                    aria-expanded="false"
+                    aria-controls="layout-container"
+                    aria-label="Toggle keyboard layout"
+                >
+                    <i class="fa-solid fa-keyboard"></i>
+                    <span class="hidden sm:inline">Layout</span>
+                </button>
             </div>
 
-            <!-- Editor Area -->
+            <!-- Editor -->
             <div class="relative w-full">
                 <textarea
                     id="banglapad"
-                    class="flex min-h-[300px] sm:min-h-[400px] w-full rounded-md border border-input bg-background px-3 py-2 text-lg ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-bengali resize-y shadow-sm transition-shadow"
+                    class="w-full rounded-lg border border-input bg-background px-4 py-3 text-lg ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-bengali resize-y shadow-sm hover:shadow-md focus:shadow-lg"
                     placeholder="এখানে বাংলা লিখুন..."
                     aria-label="Bangla text input area"
+                    enterkeyhint="go"
+                    inputmode="text"
+                    autocapitalize="sentences"
+                    spellcheck="true"
                 ></textarea>
 
-                <!-- Layout Image Container (hidden by default) -->
                 <div
                     id="layout-container"
-                    class="hidden mt-4 p-4 bg-card rounded-md border border-input"
+                    class="hidden mt-4 p-4 bg-card rounded-lg border border-input"
                     role="region"
                     aria-label="Probhat keyboard layout reference"
                 >
-                    <div class="flex items-center justify-center overflow-x-auto">
+                    <div class="flex justify-center overflow-x-auto">
                         <img
                             src="KB-Bengali-Probhat.svg"
                             class="max-w-full h-auto rounded-md border shadow-sm"
-                            alt="Probhat Keyboard Layout Diagram"
+                            alt="Probhat Keyboard Layout"
                             loading="lazy"
+                            decoding="async"
                         />
                     </div>
                 </div>
             </div>
 
-            <!-- Helper Text -->
-            <div class="mt-4 text-center text-xs text-muted-foreground">
+            <div class="text-center text-xs text-muted-foreground mt-1">
                 <p>
-                    Tip: Press <kbd class="px-1.5 py-0.5 bg-muted rounded font-mono">Ctrl+M</kbd> to
-                    toggle language •
-                    <kbd class="px-1.5 py-0.5 bg-muted rounded font-mono">Ctrl+L</kbd> to toggle
-                    layout
+                    <kbd class="px-1.5 py-0.5 bg-muted rounded font-mono">Ctrl+L</kbd> toggle layout
                 </p>
             </div>
         </main>
-
-        <!-- Footer -->
-        <footer class="border-t py-6 md:py-0">
-            <div
-                class="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
-            >
-                <p class="text-center text-sm leading-loose text-muted-foreground md:text-left">
-                    Modified by
-                    <a
-                        href="https://github.com/ashik-maybe"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="font-medium underline underline-offset-4 hover:text-foreground transition-colors"
-                        >ashik-maybe</a
-                    >.
-                </p>
-            </div>
-        </footer>
     </body>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57632461-8"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
-        gtag("config", "UA-57632461-8");
-    </script>
 </html>
