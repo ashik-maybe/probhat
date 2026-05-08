@@ -1,0 +1,6 @@
+{
+  "name": "probhat-web",
+  "scripts": {
+    "dev": "bunx serve ."
+  }
+}
