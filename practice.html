@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="author" content="ashik-maybe" />
+        <meta
+            name="description"
+            content="probhat-web - Practice typing Bangla pangrams using Probhat keyboard layout."
+        />
+        <meta name="theme-color" content="#ffffff" />
+
+        <title>প্র্যাকটিস — অনলাইন প্রভাত কিবোর্ড</title>
+
+        <link rel="icon" type="image/x-icon" href="favicon.ico?t=20160710" />
+        <link rel="apple-touch-icon" href="apple-touch-icon.png?t=20160710" />
+
+        <link
+            rel="preload"
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500:600;700&family=Noto+Sans+Bengali:wght@400;500:600;700&display=swap"
+            as="style"
+            onload="this.rel = 'stylesheet'"
+        />
+        <noscript
+            ><link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500:600;700&family=Noto+Sans+Bengali:wght@400;500:600;700&display=swap"
+        /></noscript>
+
+        <link rel="stylesheet" href="src/style.css" />
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.selector.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.preferences.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.inputmethods.min.js"></script>
+
+        <script src="src/pangrams.js"></script>
+        <script src="src/practice.js" defer></script>
+    </head>
+
+    <body class="page">
+        <a href="index.html" class="back-btn" aria-label="Back to home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>
+        </a>
+
+        <main class="main practice-content">
+            <select id="pangram-select" class="practice-select"></select>
+            <div id="pangram-reference" class="practice-reference"></div>
+            <textarea
+                id="banglapad"
+                class="editor-textarea practice-textarea"
+                placeholder="প্যানগ্রামটি টাইপ করে প্র্যাকটিস করুন..."
+                aria-label="Practice typing area"
+                enterkeyhint="go"
+                inputmode="text"
+                autocapitalize="sentences"
+                spellcheck="true"
+            ></textarea>
+        </main>
+
+        <div
+            id="layout-container"
+            class="layout-box"
+            role="region"
+            aria-label="Probhat keyboard layout reference"
+        >
+            <div class="layout-img-wrap">
+                <img
+                    src="public/KB-Bengali-Probhat.svg"
+                    class="layout-img"
+                    alt="Probhat Keyboard Layout"
+                    loading="lazy"
+                    decoding="async"
+                />
+            </div>
+        </div>
+
+        <div id="copy-toast" class="toast hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"/>
+            </svg>
+            Copied
+        </div>
+
+        <div class="mobile-unavailable">
+            <p style="font-size:1.125rem;font-weight:500">প্র্যাকটিস মোড শুধুমাত্র বড় স্ক্রিনে উপলব্ধ</p>
+            <p style="font-size:0.875rem;color:hsl(var(--muted-foreground))">Practice mode requires a larger screen</p>
+            <a href="index.html" class="btn" style="width:auto;margin-top:0.5rem">← Back to Home</a>
+        </div>
+    </body>
+</html>
