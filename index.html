@@ -29,174 +29,7 @@
                 href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500:600;700&family=Noto+Sans+Bengali:wght@400;500:600;700&display=swap"
         /></noscript>
 
-        <!-- Tailwind CSS -->
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script>
-            tailwind.config = {
-                theme: {
-                    extend: {
-                        fontFamily: {
-                            sans: ["Plus Jakarta Sans", "system-ui", "sans-serif"],
-                            bengali: ["Noto Sans Bengali", "system-ui", "sans-serif"],
-                        },
-                        colors: {
-                            border: "hsl(var(--border))",
-                            input: "hsl(var(--input))",
-                            ring: "hsl(var(--ring))",
-                            background: "hsl(var(--background))",
-                            foreground: "hsl(var(--foreground))",
-                            primary: {
-                                DEFAULT: "hsl(var(--primary))",
-                                foreground: "hsl(var(--primary-foreground))",
-                            },
-                            secondary: {
-                                DEFAULT: "hsl(var(--secondary))",
-                                foreground: "hsl(var(--secondary-foreground))",
-                            },
-                            muted: {
-                                DEFAULT: "hsl(var(--muted))",
-                                foreground: "hsl(var(--muted-foreground))",
-                            },
-                            accent: {
-                                DEFAULT: "hsl(var(--accent))",
-                                foreground: "hsl(var(--accent-foreground))",
-                            },
-                            card: {
-                                DEFAULT: "hsl(var(--card))",
-                                foreground: "hsl(var(--card-foreground))",
-                            },
-                        },
-                        borderRadius: {
-                            lg: "var(--radius)",
-                            md: "calc(var(--radius) - 2px)",
-                            sm: "calc(var(--radius) - 4px)",
-                        },
-                    },
-                },
-            };
-        </script>
-        <style>
-            @layer base {
-                :root {
-                    --background: 0 0% 100%;
-                    --foreground: 222.2 84% 4.9%;
-                    --card: 0 0% 100%;
-                    --card-foreground: 222.2 84% 4.9%;
-                    --primary: 222.2 47.4% 11.2%;
-                    --primary-foreground: 210 40% 98%;
-                    --secondary: 210 40% 96.1%;
-                    --secondary-foreground: 222.2 47.4% 11.2%;
-                    --muted: 210 40% 96.1%;
-                    --muted-foreground: 215.4 16.3% 46.9%;
-                    --accent: 210 40% 96.1%;
-                    --accent-foreground: 222.2 47.4% 11.2%;
-                    --destructive: 0 84.2% 60.2%;
-                    --destructive-foreground: 210 40% 98%;
-                    --border: 214.3 31.8% 91.4%;
-                    --input: 214.3 31.8% 91.4%;
-                    --ring: 222.2 84% 4.9%;
-                    --radius: 0.5rem;
-                }
-                body {
-                    @apply bg-background text-foreground font-sans antialiased min-h-screen flex flex-col;
-                    padding-top: env(safe-area-inset-top);
-                    padding-bottom: env(safe-area-inset-bottom);
-                }
-                @media (prefers-reduced-motion: reduce) {
-                    *,
-                    *::before,
-                    *::after {
-                        animation-duration: 0.01ms !important;
-                        transition-duration: 0.01ms !important;
-                    }
-                }
-            }
-            .imeselector {
-                display: none !important;
-            }
-            #banglapad {
-                min-height: clamp(250px, 50dvh, 400px);
-            }
-            #layout-container {
-                transition: opacity 0.15s ease;
-                transform-origin: top center;
-            }
-            #layout-container.state-hidden {
-                opacity: 0;
-                pointer-events: none;
-            }
-            #layout-container.state-visible {
-                opacity: 1;
-                pointer-events: auto;
-            }
-            .touch-btn {
-                @apply min-h-[44px] min-w-[44px] touch-action-manipulation select-none active:scale-[0.98];
-            }
-            #copy-toast {
-                opacity: 1;
-                transform: none;
-            }
-            #copy-toast.hidden {
-                display: none;
-            }
-            /* Layout button tooltip */
-            #action-layout {
-                position: relative;
-            }
-            #action-layout .shortcut-tip {
-                position: absolute;
-                bottom: 100%;
-                left: 50%;
-                transform: translateX(-50%) translateY(4px);
-                padding: 3px 7px;
-                background: var(--foreground);
-                color: var(--background);
-                font-size: 10px;
-                border-radius: 3px;
-                white-space: nowrap;
-                opacity: 0;
-                pointer-events: none;
-                transition:
-                    opacity 0.1s ease,
-                    transform 0.1s ease;
-                z-index: 10;
-            }
-            #action-layout:hover .shortcut-tip {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-            #layout-container.pinned {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                z-index: 30;
-                margin: 0;
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-                border-bottom: none;
-                box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
-            }
-            #action-pin {
-                display: none;
-            }
-            #action-pin.pin-visible {
-                display: inline-flex;
-            }
-            @media (max-width: 767px) {
-                #action-pin {
-                    display: none !important;
-                }
-            }
-            #action-pin[aria-pressed="true"] svg {
-                transform: rotate(180deg);
-            }
-            main.pin-active {
-                padding-bottom: var(--layout-height, 0px);
-                transition: padding-bottom 0.15s ease;
-            }
-        </style>
+        <link rel="stylesheet" href="src/style.css" />
 
         <!-- jQuery & IME -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -205,175 +38,22 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.preferences.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/jquery.ime.inputmethods.min.js"></script>
 
-        <script>
-            $(document).ready(function () {
-                $.ime.preferences.registry.language = "bn";
-                $.ime.preferences.registry.showSelector = false;
-                $.ime.preferences.registry.imes = { bn: "bn-probhat", en: "system" };
-                $.ime.preferences.getDefaultLanguage = () => "bn";
-                $("textarea").ime({
-                    languages: ["bn"],
-                    imePath: "https://cdnjs.cloudflare.com/ajax/libs/jquery.ime/0.3.0/",
-                });
-
-                // Copy
-                $("#action-copy").click(function () {
-                    navigator.clipboard
-                        .writeText($("#banglapad").val())
-                        .then(() => {
-                            showCopiedToast();
-                            if (
-                                navigator.share &&
-                                /Android|iPhone|iPad/i.test(navigator.userAgent)
-                            ) {
-                                $("#action-share").removeClass("hidden");
-                            }
-                        })
-                        .catch(console.error);
-                });
-
-                // Share (mobile only)
-                $("#action-share").click(async function () {
-                    const text = $("#banglapad").val();
-                    if (navigator.share && text) {
-                        try {
-                            await navigator.share({ title: "Bangla Text", text });
-                        } catch (err) {
-                            if (err.name !== "AbortError") console.error(err);
-                        }
-                    }
-                });
-
-                // Clear
-                $("#action-clear").click(function () {
-                    $("#banglapad").val("");
-                    localStorage.removeItem("banglapad_content");
-                    updateCounter();
-                    $("#banglapad").focus();
-                });
-
-                // Auto-save + Counter
-                $("#banglapad").focus();
-                const saved = localStorage.getItem("banglapad_content");
-                if (saved) $("#banglapad").val(saved);
-                updateCounter();
-
-                $("#banglapad").on("input", function () {
-                    localStorage.setItem("banglapad_content", $(this).val());
-                    updateCounter();
-                    if (!$(this).val()) $("#action-share").addClass("hidden");
-                });
-
-                function updateCounter() {
-                    const text = $("#banglapad").val().trim();
-                    const chars = text.length;
-                    const words = text ? text.split(/\s+/).filter((w) => w.length > 0).length : 0;
-                    $("#counter").text(
-                        `${chars} char${chars !== 1 ? "s" : ""} • ${words} word${words !== 1 ? "s" : ""}`,
-                    );
-                }
-
-                // Layout Toggle (instant)
-                const layoutEl = document.getElementById("layout-container");
-                const layoutBtn = document.getElementById("action-layout");
-                let layoutOpen = false;
-
-                function toggleLayout() {
-                    if (layoutOpen && pinned) {
-                        pinned = false;
-                        layoutEl.classList.remove("pinned");
-                        pinBtn.setAttribute("aria-pressed", "false");
-                        mainEl.classList.remove("pin-active");
-                    }
-                    layoutOpen = !layoutOpen;
-                    if (layoutOpen) {
-                        layoutEl.classList.remove("hidden", "state-hidden");
-                        layoutEl.classList.add("state-visible");
-                        layoutBtn.classList.add("bg-accent", "text-accent-foreground");
-                        layoutBtn.setAttribute("aria-expanded", "true");
-                        pinBtn.classList.add("pin-visible");
-                    } else {
-                        layoutEl.classList.add("state-hidden");
-                        layoutBtn.classList.remove("bg-accent", "text-accent-foreground");
-                        layoutBtn.setAttribute("aria-expanded", "false");
-                        layoutEl.classList.add("hidden");
-                        pinBtn.classList.remove("pin-visible");
-                    }
-                    $("#banglapad").focus();
-                }
-                layoutBtn.addEventListener("click", toggleLayout);
-                layoutEl.addEventListener("click", (e) => {
-                    if (e.target === layoutEl) toggleLayout();
-                });
-                document.addEventListener("keydown", (e) => {
-                    if (e.ctrlKey && e.key.toLowerCase() === "l") {
-                        e.preventDefault();
-                        toggleLayout();
-                    }
-                });
-
-                // SVG Fallback
-                const layoutImg = layoutEl.querySelector("img");
-                if (layoutImg)
-                    layoutImg.onerror = () => (layoutImg.src = "public/probhat-layout.png");
-
-                // Pin to bottom
-                const pinBtn = document.getElementById("action-pin");
-                const mainEl = document.querySelector("main");
-                let pinned = false;
-
-                function updatePinPadding() {
-                    if (pinned) {
-                        const h = layoutEl.offsetHeight;
-                        mainEl.style.setProperty("--layout-height", h + "px");
-                        mainEl.classList.add("pin-active");
-                    } else {
-                        mainEl.classList.remove("pin-active");
-                    }
-                }
-
-                pinBtn.addEventListener("click", function () {
-                    pinned = !pinned;
-                    layoutEl.classList.toggle("pinned", pinned);
-                    pinBtn.setAttribute("aria-pressed", String(pinned));
-                    updatePinPadding();
-                    $("#banglapad").focus();
-                });
-
-                const ro = new ResizeObserver(function () {
-                    if (pinned) updatePinPadding();
-                });
-                ro.observe(layoutEl);
-
-                // Hide share button by default
-                if (!/Android|iPhone|iPad/i.test(navigator.userAgent)) {
-                    $("#action-share").addClass("hidden");
-                }
-            });
-
-            function showCopiedToast() {
-                const toast = document.getElementById("copy-toast");
-                toast.classList.remove("hidden");
-                setTimeout(() => toast.classList.add("hidden"), 1500);
-            }
-        </script>
+        <script src="src/main.js" defer></script>
     </head>
 
-    <body>
-        <!-- Navbar: compact, no backdrop-blur -->
-        <nav class="border-b bg-background sticky top-0 z-40">
-            <div
-                class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between"
-            >
-                <div class="flex items-center gap-3">
-                    <img src="favicon.ico" alt="Logo" class="w-7 h-7" />
-                    <span class="font-bold text-base tracking-tight">অনলাইন প্রভাত কিবোর্ড</span>
+    <body class="page">
+        <!-- Navbar -->
+        <nav class="nav">
+            <div class="nav-inner">
+                <div class="toolbar-group">
+                    <img src="favicon.ico" alt="Logo" class="icon" style="width: 1.75rem; height: 1.75rem" />
+                    <span class="logo-text">অনলাইন প্রভাত কিবোর্ড</span>
                 </div>
                 <a
                     href="https://github.com/ashik-maybe/probhat-online"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-9 w-9 touch-btn"
+                    class="btn-icon"
                     aria-label="View source on GitHub"
                 >
                     <svg
@@ -397,17 +77,13 @@
         </nav>
 
         <!-- Main -->
-        <main
-            class="flex-1 container max-w-5xl mx-auto px-4 py-4 sm:py-6 sm:px-6 lg:px-8 flex flex-col gap-3"
-        >
+        <main class="main">
             <!-- Toolbar -->
-            <div
-                class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2 sm:gap-3"
-            >
-                <div class="flex items-center gap-1.5 w-full sm:w-auto">
+            <div class="toolbar">
+                <div class="toolbar-group">
                     <button
                         id="action-copy"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 w-full sm:w-auto gap-1.5 touch-btn"
+                        class="btn"
                         aria-label="Copy text"
                     >
                         <svg
@@ -420,16 +96,16 @@
                             stroke-width="2"
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            class="opacity-90"
+                            class="icon"
                         >
                             <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
                             <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
                         </svg>
-                        <span class="hidden sm:inline">Copy</span>
+                        <span class="btn-label">Copy</span>
                     </button>
                     <button
                         id="action-clear"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 w-full sm:w-auto gap-1.5 touch-btn"
+                        class="btn"
                         aria-label="Clear text"
                     >
                         <svg
@@ -442,17 +118,17 @@
                             stroke-width="2"
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            class="opacity-90"
+                            class="icon"
                         >
                             <path d="M3 6h18" />
                             <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
                             <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
                         </svg>
-                        <span class="hidden sm:inline">Clear</span>
+                        <span class="btn-label">Clear</span>
                     </button>
                     <button
                         id="action-share"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-9 touch-btn hidden"
+                        class="btn-icon hidden"
                         aria-label="Share text"
                     >
                         <svg
@@ -473,17 +149,12 @@
                             <path d="M15.41 6.51l-6.82 3.98" />
                         </svg>
                     </button>
-                    <!-- Char/Word Counter (between actions and layout) -->
-                    <span
-                        id="counter"
-                        class="text-xs text-muted-foreground ml-1 sm:ml-2 hidden sm:inline"
-                        >0 chars • 0 words</span
-                    >
+                    <span id="counter" class="counter">0 chars • 0 words</span>
                 </div>
-                <div class="flex items-center gap-1.5 w-full sm:w-auto">
+                <div class="toolbar-group">
                     <button
                         id="action-layout"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 gap-1.5 w-full sm:w-auto touch-btn"
+                        class="btn"
                         aria-expanded="false"
                         aria-controls="layout-container"
                         aria-label="Toggle keyboard layout"
@@ -498,7 +169,7 @@
                             stroke-width="2"
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            class="opacity-90"
+                            class="icon"
                         >
                             <rect width="20" height="16" x="2" y="4" rx="2" />
                             <path d="M6 8h.001" />
@@ -510,16 +181,16 @@
                             <path d="M16 12h.001" />
                             <path d="M7 16h10" />
                         </svg>
-                        <span class="hidden sm:inline">Layout</span>
-                        <span class="shortcut-tip hidden md-block">Ctrl+L</span>
+                        <span class="btn-label">Layout</span>
+                        <span class="shortcut-tip">Ctrl+L</span>
                     </button>
                     <button
                         id="action-pin"
-                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 gap-1.5 w-full sm:w-auto touch-btn hidden"
+                        class="btn"
                         aria-pressed="false"
                         aria-label="Pin layout to bottom"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-90">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon">
                             <line x1="12" y1="4" x2="12" y2="16"/>
                             <polyline points="8 8 12 4 16 8"/>
                         </svg>
@@ -528,10 +199,9 @@
             </div>
 
             <!-- Editor -->
-            <div class="relative w-full">
+            <div class="editor">
                 <textarea
                     id="banglapad"
-                    class="w-full rounded-lg border border-input bg-background px-4 py-3 text-lg ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-bengali resize-y"
                     placeholder="এখানে বাংলা লিখুন..."
                     aria-label="Bangla text input area"
                     enterkeyhint="go"
@@ -542,14 +212,14 @@
 
                 <div
                     id="layout-container"
-                    class="hidden mt-3 p-3 bg-card rounded-lg border border-input"
+                    class="layout-box hidden"
                     role="region"
                     aria-label="Probhat keyboard layout reference"
                 >
-                    <div class="flex justify-center overflow-x-auto">
+                    <div class="layout-img-wrap">
                         <img
                             src="public/KB-Bengali-Probhat.svg"
-                            class="max-w-full h-auto rounded-md border"
+                            class="layout-img"
                             alt="Probhat Keyboard Layout"
                             loading="lazy"
                             decoding="async"
@@ -562,7 +232,7 @@
         <!-- Instant Toast -->
         <div
             id="copy-toast"
-            class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 hidden flex items-center gap-1.5 px-3 py-2 bg-foreground text-background text-xs font-medium rounded shadow"
+            class="toast hidden"
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
